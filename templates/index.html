@@ -1,23 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Todo App</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        form { display: flex; gap: 10px; margin-bottom: 20px; }
+        form input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        form button { padding: 10px 20px; border: none; background-color: #28a745; color: white; border-radius: 4px; cursor: pointer; }
+        form button:hover { background-color: #218838; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        button.delete-btn { padding: 5px 10px; border: none; background-color: #dc3545; color: white; border-radius: 4px; cursor: pointer; }
+        button.delete-btn:hover { background-color: #c82333; }
+    </style>
 </head>
 <body>
-    <h1>Simple Todo App</h1>
+    <div class="container">
+        <h1>Simple Todo App</h1>
 
-    <form action="/create-todo" method="post">
-        <input type="text" name="item" placeholder="Enter a new todo" required>
-        <button type="submit">Add</button>
-    </form>
+        <!-- Create Form -->
+        <form action="/create-todo" method="post">
+            <input type="number" name="id" placeholder="ID" required>
+            <input type="text"   name="task" placeholder="Task" required>
+            <input type="text"   name="owner" placeholder="Owner" required>
+            <button type="submit">Add</button>
+        </form>
 
-    <h2>Todo List:</h2>
-    <ul>
-        {% for todo in todos %}
-            <li>{{ todo }}</li>
-        {% else %}
+        <h2>Todo List:</h2>
+        <ul>
+            {% for t in todos %}
+            <li>
+                <span>{{ t.id }} – {{ t.task }} (owner: {{ t.owner }})</span>
+                <!-- Delete Form -->
+                <form action="/delete-todo" method="post" style="margin:0">
+                    <input type="hidden" name="id"    value="{{ t.id }}">
+                    <input type="hidden" name="owner" value="{{ t.owner }}">
+                    <button class="delete-btn" type="submit">Delete</button>
+                </form>
+            </li>
+            {% else %}
             <li>No todos yet!</li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
